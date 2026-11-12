@@ -1,14 +1,12 @@
-import { MealApi } from './lib/api.js';
-import { MealSearcher } from './lib/meals.js';
+import { MealApi } from "./lib/api.js";
+import { MealSearcher } from "./lib/meals.js";
 
 /** Grunnslóð á API, `1` er ókeypis prófunarlykill. */
-const API_BASE = 'https://www.themealdb.com/api/json/v1/1/';
+const API_BASE = "https://www.themealdb.com/api/json/v1/1/";
 
 /** API virkni. */
 const api = new MealApi(API_BASE);
-const searcherElement = document.querySelector('.meal-searcher');
+const searcherElement = document.querySelector(".meal-searcher");
 const searcher = new MealSearcher(api, searcherElement);
-const id = new URLSearchParams(window.location.search).get('id');
+const id = new URLSearchParams(window.location.search).get("id");
 searcher.render(id);
-
-
