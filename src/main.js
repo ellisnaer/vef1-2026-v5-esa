@@ -8,6 +8,7 @@ const API_BASE = 'https://www.themealdb.com/api/json/v1/1/';
 const api = new MealApi(API_BASE);
 const searcherElement = document.querySelector('.meal-searcher');
 const searcher = new MealSearcher(api, searcherElement);
-searcher.render();
-/* TODO útfæra rest */
+const id = new URLSearchParams(window.location.search).get('id');
+searcher.render(id);
+
 

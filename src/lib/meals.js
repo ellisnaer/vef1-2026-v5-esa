@@ -24,6 +24,10 @@ export class MealSearcher {
 
   renderResults(results) {
     empty(this.resultsElement);
+    if (results.length === 0) {
+      this.resultsElement.appendChild(el('p', {}, 'Engar niðurstöður'));
+      return;
+    }
     const list = el('ul');
     for (const result of results) {
     const img = el('img', { src: result.image, alt: result.title });
@@ -33,6 +37,25 @@ export class MealSearcher {
     }
     this.resultsElement.appendChild(list);
   }
+
+  async renderRecipe(id) {
+    const result = await this.api.lookup(id);
+      if (!result) {
+        this.baseElement.appendChild(el('p', {}, 'Uppskrift fannst ekki'));
+        return;
+      }
+      const title = el('h2', {}, result.title);
+      const img = el('img', { src: result.image, alt: result.title });
+      const ingredients = el('ul');
+      for (const item of result.ingredients) {
+        const li = el('li', {}, `${item.ingredient} - ${item.measure}`);
+        ingredients.appendChild(li);
+      }
+      const instructions = el('p', {}, result.instructions);
+      const back = el('a', { href: '?' }, 'Til baka');
+      const recipe = el('article', {}, title, img, ingredients, instructions, back);
+      this.baseElement.appendChild(recipe);
+    }  
 
     /**
    * Birtir annaðhvort leitarform eða ákveðna uppskrift.
