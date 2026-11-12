@@ -37,8 +37,22 @@ export class MealSearcher {
    * @returns {Promise<void>}
    */
   async search(query) {
-    const results = await this.api.search(query);
-    this.renderResults(results);
+    if (!query) {
+      empty(this.resultsElement);
+      this.resultsElement.appendChild(el("p", {}, "Sláðu inn leitarorð"));
+      return;
+    }
+    empty(this.resultsElement);
+    this.resultsElement.appendChild(el("p", {}, 'Leita að "' + query + '"...'));
+    try {
+      const results = await this.api.search(query);
+      this.renderResults(results);
+    } catch (e) {
+      empty(this.resultsElement);
+      this.resultsElement.appendChild(
+        el("p", {}, "Villa kom upp við leit: " + e.message),
+      );
+    }
   }
   /**
    * Birtir niðurstöður leitar
